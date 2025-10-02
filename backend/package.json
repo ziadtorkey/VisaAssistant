@@ -1,0 +1,30 @@
+{
+  "name": "visa-requirements-backend",
+  "version": "1.0.0",
+  "description": "Backend for visa requirements web application",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "init-db": "node src/config/initDatabase.js"
+  },
+  "keywords": ["visa", "travel", "requirements"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "puppeteer": "^21.5.2",
+    "cheerio": "^1.0.0-rc.12",
+    "axios": "^1.6.2",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

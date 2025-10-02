@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(npm install)",
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npm run init-db:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(curl http://localhost:5000/api/health)",
+      "Bash(curl:*)",
+      "Bash(node:*)",
+      "Bash(sqlite3:*)",
+      "Bash(timeout 3 bash -c \"while ! curl -s http://localhost:5000/api/health > /dev/null; do sleep 0.5; done\")",
+      "Bash(timeout 5 bash -c \"while ! curl -s http://localhost:5000/api/health > /dev/null; do sleep 0.5; done\")",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(cat:*)",
+      "Bash(while true)",
+      "Bash(do sleep:*)",
+      "Bash(done)",
+      "WebFetch(domain:platform.openai.com)",
+      "WebFetch(domain:docs.perplexity.ai)",
+      "WebSearch",
+      "Bash(timeout 2 cat)",
+      "Bash(dir:*)",
+      "mcp__github__get_me",
+      "mcp__github__search_repositories",
+      "mcp__github__create_repository",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(del nul)",
+      "Bash(rm:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

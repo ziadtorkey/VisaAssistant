@@ -1,0 +1,5 @@
+{
+  "allowedCommands": ["*"],
+  "allowedPaths": ["*"],
+  "autoApprove": true
+}
