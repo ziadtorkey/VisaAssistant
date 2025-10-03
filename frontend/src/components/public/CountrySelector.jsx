@@ -114,67 +114,122 @@ function CountrySelector() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Visa Requirements Checker
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 relative overflow-hidden">
+      {/* World map dotted pattern background */}
+      <div className="absolute inset-0 opacity-15 pointer-events-none flex items-center justify-center">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_%28blue_dots%29.svg"
+          alt="World map dotted background"
+          className="w-full h-full object-contain"
+          style={{ filter: 'grayscale(100%) brightness(0.7)' }}
+        />
+      </div>
+
+      {/* Decorative dotted patterns */}
+      <div className="absolute top-10 left-10 w-32 h-32 opacity-20">
+        <div className="w-full h-full" style={{
+          backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
+          backgroundSize: '8px 8px'
+        }}></div>
+      </div>
+      <div className="absolute top-20 right-20 w-40 h-40 opacity-20">
+        <div className="w-full h-full" style={{
+          backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
+          backgroundSize: '8px 8px'
+        }}></div>
+      </div>
+      <div className="absolute bottom-32 left-1/4 w-36 h-36 opacity-15">
+        <div className="w-full h-full" style={{
+          backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
+          backgroundSize: '8px 8px'
+        }}></div>
+      </div>
+
+      {/* Circular background images */}
+      <div className="absolute top-8 right-32 w-64 h-64 rounded-full overflow-hidden shadow-2xl z-0">
+        <img
+          src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=600&h=600&fit=crop"
+          alt="City skyline"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="absolute top-64 right-16 w-56 h-56 rounded-full overflow-hidden shadow-2xl z-0">
+        <img
+          src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=600&fit=crop"
+          alt="Park landscape"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="max-w-5xl mx-auto relative z-10">
+        <div className="text-left mb-10">
+          <p className="text-sm text-gray-500 uppercase tracking-wide mb-2">VISA REQUIREMENTS</p>
+          <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-3 leading-tight">
+            Adventure &<br />
+            Experience<br />
+            The Travel !
           </h1>
-          <p className="text-gray-600">
-            Find visa requirements and documentation for international travel
-          </p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <SearchableSelect
-              label="Passport Country"
-              value={passportCountry}
-              onChange={setPassportCountry}
-              options={countries.map(c => ({ value: c.code, label: c.name }))}
-              placeholder="Select your passport country"
-              required={true}
-            />
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div className="md:col-span-1">
+              <SearchableSelect
+                label="Passport Country"
+                value={passportCountry}
+                onChange={setPassportCountry}
+                options={countries.map(c => ({ value: c.code, label: c.name }))}
+                placeholder="Insert keyword"
+                required={true}
+              />
+            </div>
 
-            <SearchableSelect
-              label="Country of Residence"
-              value={residenceCountry}
-              onChange={setResidenceCountry}
-              options={countries.map(c => ({ value: c.code, label: c.name }))}
-              placeholder="Select your country of residence"
-              required={true}
-            />
+            <div className="md:col-span-1">
+              <SearchableSelect
+                label="Country of Residence"
+                value={residenceCountry}
+                onChange={setResidenceCountry}
+                options={countries.map(c => ({ value: c.code, label: c.name }))}
+                placeholder="All Destinations"
+                required={true}
+              />
+            </div>
 
-            <SearchableSelect
-              label="Destination Country"
-              value={destinationCountry}
-              onChange={setDestinationCountry}
-              options={countries.map(c => ({ value: c.code, label: c.name }))}
-              placeholder="Select your destination"
-              required={true}
-            />
+            <div className="md:col-span-1">
+              <SearchableSelect
+                label="Destination Country"
+                value={destinationCountry}
+                onChange={setDestinationCountry}
+                options={countries.map(c => ({ value: c.code, label: c.name }))}
+                placeholder="All Typologies"
+                required={true}
+              />
+            </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 px-6 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-            >
-              {loading ? 'Loading...' : 'Get Visa Requirements'}
-            </button>
+            <div className="md:col-span-1">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-teal-500 hover:bg-teal-600 text-white py-3.5 px-8 rounded-lg font-semibold uppercase tracking-wide focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
+              >
+                {loading ? 'Loading...' : 'SEARCH'}
+              </button>
+            </div>
           </form>
 
           {loading && loadingMessage && (
-            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-md">
+            <div className="mt-6 p-4 bg-teal-50 border border-teal-200 rounded-lg">
               <div className="flex items-center">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 mr-3"></div>
-                <p className="text-blue-800">{loadingMessage}</p>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-teal-600 mr-3"></div>
+                <p className="text-teal-800 font-medium">{loadingMessage}</p>
               </div>
             </div>
           )}
 
           {error && (
-            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
-              <p className="text-red-800">{error}</p>
+            <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-800 font-medium">{error}</p>
             </div>
           )}
         </div>
