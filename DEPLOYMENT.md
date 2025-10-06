@@ -59,12 +59,22 @@ You need to set these in the Render dashboard for the backend service:
 
 The frontend will automatically get the `VITE_API_URL` from the backend service URL. No manual configuration needed!
 
-### Step 4: Add Persistent Disk for Database
+### Step 4: Database Persistence (Free Tier Limitation)
 
-1. Go to your backend service dashboard
-2. Navigate to "Disks" tab
-3. The disk named "visa-db" should already be configured from `render.yaml`
-4. Verify it's mounted at `/opt/render/project/backend` with 1GB size
+**⚠️ IMPORTANT**: The free tier does NOT support persistent disks. Your database will be reset when:
+- The service restarts
+- The service is redeployed
+- The service spins down and back up
+
+**Options:**
+
+1. **Use Free Tier** (for testing): Database will reset on restarts
+2. **Upgrade to Starter Plan** ($7/month): Add persistent disk for database storage
+   - Go to backend service → "Disks" tab
+   - Add a new disk (1GB is sufficient)
+   - Mount path: `/opt/render/project/backend`
+
+For production use, the Starter plan is recommended.
 
 ### Step 5: Deploy
 
@@ -149,15 +159,19 @@ app.use(cors({
 ### Free Tier Limitations
 
 Render's free tier has some limitations:
+- **⚠️ NO PERSISTENT DISK**: Database resets on every restart/redeploy
 - Services spin down after 15 minutes of inactivity
 - First request after spin-down takes 30-60 seconds (cold start)
 - 750 hours/month of usage
-- Databases persist but services may be slower
+- Services may be slower than paid plans
+
+**For production use with persistent database, upgrade to Starter plan ($7/month per service).**
 
 ### Database Backup
 
-Your SQLite database is stored on the persistent disk. To back it up:
+**Free Tier**: No persistent storage, so backups aren't applicable.
 
+**Paid Plans** (with persistent disk):
 1. Use Render's disk snapshots (paid feature)
 2. Or periodically download the database:
    ```bash

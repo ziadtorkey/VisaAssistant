@@ -1,5 +1,7 @@
 services:
   # Backend API Service
+  # NOTE: Database will NOT persist on free tier (no disk support)
+  # Upgrade to paid plan ($7/month) for persistent disk storage
   - type: web
     name: visa-assistant-backend
     runtime: node
@@ -24,18 +26,12 @@ services:
         sync: false
       - key: OPENAI_API_KEY
         sync: false
-    disk:
-      name: visa-db
-      mountPath: /opt/render/project/backend
-      sizeGB: 1
     healthCheckPath: /api/health
 
   # Frontend Static Site
   - type: web
     name: visa-assistant-frontend
     runtime: static
-    region: oregon
-    plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
