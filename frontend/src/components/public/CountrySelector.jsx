@@ -235,6 +235,50 @@ function CountrySelector() {
         </div>
 
         {results && <VisaResults data={results} />}
+
+        {/* Top 10 Most Visited Countries Section */}
+        {!results && (
+          <div className="bg-white rounded-2xl shadow-xl p-8 mt-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+              Top 10 Most Visited Countries
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+              {[
+                { name: 'France', visitors: '89M', code: 'fr', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=300&fit=crop' },
+                { name: 'Spain', visitors: '83M', code: 'es', image: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=400&h=300&fit=crop' },
+                { name: 'USA', visitors: '79M', code: 'us', image: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=400&h=300&fit=crop' },
+                { name: 'China', visitors: '66M', code: 'cn', image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=400&h=300&fit=crop' },
+                { name: 'Italy', visitors: '64M', code: 'it', image: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?w=400&h=300&fit=crop' },
+                { name: 'Turkey', visitors: '51M', code: 'tr', image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=400&h=300&fit=crop' },
+                { name: 'Mexico', visitors: '45M', code: 'mx', image: 'https://images.unsplash.com/photo-1518638150340-f706e86654de?w=400&h=300&fit=crop' },
+                { name: 'Thailand', visitors: '40M', code: 'th', image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=400&h=300&fit=crop' },
+                { name: 'Germany', visitors: '39M', code: 'de', image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=400&h=300&fit=crop' },
+                { name: 'UK', visitors: '36M', code: 'gb', image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=300&fit=crop' }
+              ].map((country, index) => (
+                <div key={index} className="group cursor-pointer">
+                  <div className="relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <img
+                      src={country.image}
+                      alt={country.name}
+                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4">
+                      <img
+                        src={`https://flagcdn.com/w80/${country.code}.png`}
+                        srcSet={`https://flagcdn.com/w160/${country.code}.png 2x`}
+                        width="60"
+                        alt={`${country.name} flag`}
+                        className="mb-2 rounded shadow-md"
+                      />
+                      <h3 className="text-white font-bold text-xl">{country.name}</h3>
+                      <p className="text-teal-300 text-sm font-medium">{country.visitors} visitors/year</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
