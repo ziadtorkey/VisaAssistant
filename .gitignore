@@ -11,6 +11,11 @@ backend/database.sqlite
 .env.development.local
 .env.test.local
 .env.production.local
+backend/.env
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.production.local
 
 # Logs
 npm-debug.log*
