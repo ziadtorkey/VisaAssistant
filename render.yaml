@@ -29,6 +29,8 @@ services:
     healthCheckPath: /api/health
 
   # Frontend Static Site
+  # IMPORTANT: After deployment, manually set VITE_API_URL in Render dashboard
+  # Example: https://visa-assistant-backend.onrender.com
   - type: web
     name: visa-assistant-frontend
     runtime: static
@@ -36,10 +38,7 @@ services:
     staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: visa-assistant-backend
-          property: host
+        sync: false  # Must be set manually in Render dashboard
     routes:
       - type: rewrite
         source: /*

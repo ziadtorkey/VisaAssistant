@@ -43,7 +43,8 @@
       "WebFetch(domain:codepen.io)",
       "WebFetch(domain:commons.wikimedia.org)",
       "mcp__github__*",
-      "mcp__chrome-devtools__*"
+      "mcp__chrome-devtools__*",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

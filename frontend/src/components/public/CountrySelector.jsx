@@ -27,10 +27,12 @@ function CountrySelector() {
   const fetchCountries = async () => {
     try {
       const response = await getCountries();
-      setCountries(response.data);
+      // Ensure we always set an array
+      setCountries(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
       console.error('Error fetching countries:', err);
-      setError('Failed to load countries');
+      setCountries([]); // Set empty array on error
+      setError('Failed to load countries. Please check if the backend is running.');
     }
   };
 

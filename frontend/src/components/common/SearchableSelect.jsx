@@ -15,12 +15,15 @@ function SearchableSelect({
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
 
+  // Ensure options is always an array
+  const safeOptions = Array.isArray(options) ? options : [];
+
   // Get the display text for the selected value
-  const selectedOption = options.find(opt => opt.value === value);
+  const selectedOption = safeOptions.find(opt => opt.value === value);
   const displayText = selectedOption ? selectedOption.label : '';
 
   // Filter options based on search term
-  const filteredOptions = options.filter(option =>
+  const filteredOptions = safeOptions.filter(option =>
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
