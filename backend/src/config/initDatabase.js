@@ -87,13 +87,13 @@ const createTables = () => {
 const seedData = async () => {
   return new Promise((resolve, reject) => {
     db.serialize(async () => {
-      // Insert initial countries
-      const countries = [
-        { name: 'Switzerland', code: 'CH' },
-        { name: 'Germany', code: 'DE' },
-        { name: 'Saudi Arabia', code: 'SA' },
-        { name: 'Egypt', code: 'EG' }
-      ];
+      // Insert initial countries from JSON file
+      const fs = require('fs');
+      const path = require('path');
+      const countriesPath = path.join(__dirname, 'countries.json');
+      const countries = JSON.parse(fs.readFileSync(countriesPath, 'utf8'));
+
+      console.log(`Seeding ${countries.length} countries...`);
 
       const insertCountry = db.prepare(
         'INSERT OR IGNORE INTO countries (name, code) VALUES (?, ?)'
