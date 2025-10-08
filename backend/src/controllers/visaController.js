@@ -1,6 +1,7 @@
 const Country = require('../models/Country');
 const VisaRequirement = require('../models/VisaRequirement');
 const Setting = require('../models/Setting');
+const UserFeedback = require('../models/UserFeedback');
 const { scrapeVisaRequirement } = require('../scrapers/scrapingManager');
 
 // In-memory store for tracking scraping requests
@@ -39,17 +40,48 @@ const getVisaRequirements = async (req, res) => {
     }
 
     // Get visa requirements
-    const requirement = await VisaRequirement.getByCountries(
+    let requirement = await VisaRequirement.getByCountries(
       passportCountry.id,
       residenceCountry.id,
       destinationCountry.id
     );
 
+    // If requirement doesn't exist, create it and trigger scraping
     if (!requirement) {
-      return res.json({
-        available: false,
-        message: 'Visa requirement information not available for this combination. Please check official embassy websites.'
-      });
+      try {
+        // Create a new requirement entry with minimal data
+        const newRequirement = await VisaRequirement.create({
+          passport_country_id: passportCountry.id,
+          residence_country_id: residenceCountry.id,
+          destination_country_id: destinationCountry.id,
+          visa_status: null,
+          required_documents: null,
+          application_steps: null,
+          application_location: null,
+          contact_info: null,
+          application_form_url: null,
+          checklist_url: null,
+          visa_fee: null,
+          processing_time: null,
+          booking_link: null,
+          source_urls: null,
+          last_updated: null,
+          data_status: 'unavailable'
+        });
+
+        // Fetch the newly created requirement
+        requirement = await VisaRequirement.getByCountries(
+          passportCountry.id,
+          residenceCountry.id,
+          destinationCountry.id
+        );
+      } catch (error) {
+        console.error('Error creating visa requirement:', error);
+        return res.json({
+          available: false,
+          message: 'Unable to create visa requirement entry. Please check official embassy websites.'
+        });
+      }
     }
 
     // Check data freshness
@@ -215,4 +247,40 @@ const getScrapingStatus = async (req, res) => {
   }
 };
 
-module.exports = { getCountries, getVisaRequirements, getScrapingStatus };
+const submitFeedback = async (req, res) => {
+  try {
+    const { email, message, passportCountry, residenceCountry, destinationCountry, visaRequirementId } = req.body;
+
+    // Validate required fields
+    if (!email || !message) {
+      return res.status(400).json({ error: 'Email and message are required' });
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    // Create feedback entry
+    const feedback = await UserFeedback.create({
+      email,
+      message,
+      passport_country: passportCountry || null,
+      residence_country: residenceCountry || null,
+      destination_country: destinationCountry || null,
+      visa_requirement_id: visaRequirementId || null
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Thank you for your feedback! We will review it shortly.',
+      feedbackId: feedback.id
+    });
+  } catch (error) {
+    console.error('Error submitting feedback:', error);
+    res.status(500).json({ error: 'Failed to submit feedback' });
+  }
+};
+
+module.exports = { getCountries, getVisaRequirements, getScrapingStatus, submitFeedback };

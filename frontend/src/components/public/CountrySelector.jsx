@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { getCountries, getVisaRequirements, getScrapingStatus } from '../../services/api';
 import VisaResults from './VisaResults';
 import SearchableSelect from '../common/SearchableSelect';
+import AppBenefits from './AppBenefits';
+import FeedbackForm from './FeedbackForm';
 
 function CountrySelector() {
   const [countries, setCountries] = useState([]);
@@ -32,7 +34,7 @@ function CountrySelector() {
     } catch (err) {
       console.error('Error fetching countries:', err);
       setCountries([]); // Set empty array on error
-      setError('Failed to load countries. Please check if the backend is running.');
+      // Don't set error on initial load - only log to console
     }
   };
 
@@ -166,8 +168,8 @@ function CountrySelector() {
 
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-left mb-10">
-          <p className="text-sm text-gray-500 uppercase tracking-wide mb-2">VISA REQUIREMENTS</p>
-          <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-3 leading-tight">
+          <p className="text-2xl md:text-3xl text-gray-600 uppercase tracking-wide mb-3 font-bold">VISA REQUIREMENTS</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">
             Adventure &<br />
             Experience<br />
             The Travel !
@@ -236,6 +238,9 @@ function CountrySelector() {
           )}
         </div>
 
+        {/* App Benefits Section - shown only when no results */}
+        {!results && <AppBenefits />}
+
         {results && <VisaResults data={results} />}
 
         {/* Top 10 Most Visited Countries Section */}
@@ -281,6 +286,11 @@ function CountrySelector() {
             </div>
           </div>
         )}
+
+        {/* Feedback Form - always visible at the bottom */}
+        <div className="mt-8">
+          <FeedbackForm countries={results?.countries || null} />
+        </div>
       </div>
     </div>
   );

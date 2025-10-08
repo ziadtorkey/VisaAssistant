@@ -191,13 +191,14 @@ function VisaResults({ data }) {
           </div>
         )}
 
-        {/* Useful Links */}
+        {/* Official Resources */}
         <div>
           <h3 className="text-lg font-semibold text-gray-900 mb-3">
             Official Resources
           </h3>
           <div className="space-y-2">
-            {data.contactInfo?.website && (
+            {/* Show official URLs if available */}
+            {data.contactInfo?.website && data.contactInfo.website !== 'null' && (
               <a
                 href={data.contactInfo.website}
                 target="_blank"
@@ -207,22 +208,60 @@ function VisaResults({ data }) {
                 Official Embassy Website →
               </a>
             )}
-            <a
-              href={`https://www.google.com/search?q=${encodeURIComponent(data.destinationCountry + ' visa application ' + data.residenceCountry)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-blue-600 hover:underline"
-            >
-              Search for Visa Application Process →
-            </a>
-            <a
-              href={`https://www.google.com/search?q=${encodeURIComponent('VFS Global ' + data.destinationCountry + ' ' + data.residenceCountry)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-blue-600 hover:underline"
-            >
-              Search for VFS Global Center →
-            </a>
+
+            {data.applicationFormUrl && data.applicationFormUrl !== 'null' && (
+              <a
+                href={data.applicationFormUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-blue-600 hover:underline"
+              >
+                Visa Application Form →
+              </a>
+            )}
+
+            {data.checklistUrl && data.checklistUrl !== 'null' && (
+              <a
+                href={data.checklistUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-blue-600 hover:underline"
+              >
+                Document Checklist →
+              </a>
+            )}
+
+            {data.bookingLink && data.bookingLink !== 'null' && (
+              <a
+                href={data.bookingLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-blue-600 hover:underline"
+              >
+                Book Appointment →
+              </a>
+            )}
+
+            {/* Show scraped source URLs if available */}
+            {data.sourceUrls && data.sourceUrls.length > 0 && (
+              <>
+                <p className="text-sm font-medium text-gray-700 mt-4 mb-2">
+                  Sources used for this information:
+                </p>
+                {data.sourceUrls.map((url, index) => (
+                  <a
+                    key={index}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-sm text-blue-600 hover:underline truncate"
+                    title={url}
+                  >
+                    {url}
+                  </a>
+                ))}
+              </>
+            )}
           </div>
         </div>
 

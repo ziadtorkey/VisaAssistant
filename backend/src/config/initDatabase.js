@@ -75,6 +75,22 @@ const createTables = () => {
           value TEXT NOT NULL,
           updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
+      `);
+
+      // User feedback table
+      db.run(`
+        CREATE TABLE IF NOT EXISTS user_feedback (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          email TEXT NOT NULL,
+          message TEXT NOT NULL,
+          passport_country TEXT,
+          residence_country TEXT,
+          destination_country TEXT,
+          visa_requirement_id INTEGER,
+          status TEXT DEFAULT 'unread',
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (visa_requirement_id) REFERENCES visa_requirements(id)
+        )
       `, (err) => {
         if (err) reject(err);
         else resolve();

@@ -2,8 +2,8 @@ module.exports = {
   apps: [
     {
       name: 'visa-backend',
-      script: './backend/src/server.js',
-      cwd: '/var/www/visaassistant',
+      script: './src/server.js',
+      cwd: '/var/www/visaassistant/backend',
       instances: 1,
       exec_mode: 'fork',
       autorestart: true,

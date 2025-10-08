@@ -11,7 +11,11 @@ const {
   scrapeAll,
   getLogs,
   getSettings,
-  updateSettings
+  updateSettings,
+  getAllFeedback,
+  markFeedbackAsRead,
+  deleteFeedback,
+  getFeedbackStats
 } = require('../controllers/adminController');
 
 const router = express.Router();
@@ -41,5 +45,11 @@ router.get('/logs', getLogs);
 // Settings
 router.get('/settings', getSettings);
 router.put('/settings', updateSettings);
+
+// User Feedback
+router.get('/feedback', getAllFeedback);
+router.get('/feedback/stats', getFeedbackStats);
+router.put('/feedback/:id/read', markFeedbackAsRead);
+router.delete('/feedback/:id', deleteFeedback);
 
 module.exports = router;

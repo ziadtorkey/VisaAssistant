@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api`;
+const API_BASE_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -47,5 +49,13 @@ export const scrapeAll = () => api.post('/admin/scrape-all');
 export const getLogs = (limit) => api.get('/admin/logs', { params: { limit } });
 export const getSettings = () => api.get('/admin/settings');
 export const updateSettings = (settings) => api.put('/admin/settings', settings);
+
+// User Feedback API
+export const submitFeedback = (data) => api.post('/feedback', data);
+export const getAllFeedback = (queryString = '') =>
+  api.get(`/admin/feedback${queryString ? '?' + queryString : ''}`);
+export const getFeedbackStats = () => api.get('/admin/feedback/stats');
+export const markFeedbackAsRead = (id) => api.put(`/admin/feedback/${id}/read`);
+export const deleteFeedback = (id) => api.delete(`/admin/feedback/${id}`);
 
 export default api;

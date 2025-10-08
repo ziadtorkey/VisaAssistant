@@ -6,6 +6,7 @@ import Dashboard from './components/admin/Dashboard';
 import DataManager from './components/admin/DataManager';
 import Settings from './components/admin/Settings';
 import ScrapingLogs from './components/admin/ScrapingLogs';
+import UserFeedback from './components/admin/UserFeedback';
 import Layout from './components/Layout';
 
 function App() {
@@ -88,6 +89,18 @@ function App() {
             isAuthenticated ? (
               <Layout isAdmin={true}>
                 <Settings />
+              </Layout>
+            ) : (
+              <Navigate to="/admin" replace />
+            )
+          }
+        />
+        <Route
+          path="/admin/feedback"
+          element={
+            isAuthenticated ? (
+              <Layout isAdmin={true}>
+                <UserFeedback />
               </Layout>
             ) : (
               <Navigate to="/admin" replace />

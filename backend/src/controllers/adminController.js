@@ -2,6 +2,7 @@ const Country = require('../models/Country');
 const VisaRequirement = require('../models/VisaRequirement');
 const ScrapingLog = require('../models/ScrapingLog');
 const Setting = require('../models/Setting');
+const UserFeedback = require('../models/UserFeedback');
 const { scrapeVisaRequirement } = require('../scrapers/scrapingManager');
 
 // Dashboard
@@ -229,6 +230,75 @@ const updateSettings = async (req, res) => {
   }
 };
 
+// User Feedback Management
+const getAllFeedback = async (req, res) => {
+  try {
+    const { page = 1, limit = 20, status } = req.query;
+    const offset = (page - 1) * limit;
+
+    const result = await UserFeedback.getAllPaginated({
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      status
+    });
+
+    res.json({
+      data: result.data,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total: result.total,
+        totalPages: Math.ceil(result.total / limit)
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching feedback:', error);
+    res.status(500).json({ error: 'Failed to fetch feedback' });
+  }
+};
+
+const markFeedbackAsRead = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await UserFeedback.markAsRead(id);
+
+    if (result.changes === 0) {
+      return res.status(404).json({ error: 'Feedback not found' });
+    }
+
+    res.json({ message: 'Feedback marked as read' });
+  } catch (error) {
+    console.error('Error marking feedback as read:', error);
+    res.status(500).json({ error: 'Failed to mark feedback as read' });
+  }
+};
+
+const deleteFeedback = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await UserFeedback.delete(id);
+
+    if (result.changes === 0) {
+      return res.status(404).json({ error: 'Feedback not found' });
+    }
+
+    res.json({ message: 'Feedback deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting feedback:', error);
+    res.status(500).json({ error: 'Failed to delete feedback' });
+  }
+};
+
+const getFeedbackStats = async (req, res) => {
+  try {
+    const stats = await UserFeedback.getStats();
+    res.json(stats);
+  } catch (error) {
+    console.error('Error fetching feedback stats:', error);
+    res.status(500).json({ error: 'Failed to fetch feedback stats' });
+  }
+};
+
 module.exports = {
   getDashboard,
   getAllCountries,
@@ -240,5 +310,9 @@ module.exports = {
   scrapeAll,
   getLogs,
   getSettings,
-  updateSettings
+  updateSettings,
+  getAllFeedback,
+  markFeedbackAsRead,
+  deleteFeedback,
+  getFeedbackStats
 };

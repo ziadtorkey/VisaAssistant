@@ -113,33 +113,46 @@ class PerplexityScraper {
   }
 
   buildPrompt(passportCountry, residenceCountry, destinationCountry) {
-    return `Search the web for accurate visa requirement information for the following travel scenario:
+    return `Search the web for ${destinationCountry.name} visa requirements for ${passportCountry.name} passport holders currently residing in ${residenceCountry.name}.
 
+TRAVEL SCENARIO:
 - Passport Country: ${passportCountry.name} (${passportCountry.code})
 - Current Residence: ${residenceCountry.name} (${residenceCountry.code})
 - Destination Country: ${destinationCountry.name} (${destinationCountry.code})
 - Visa Type: Tourist/Short Stay
 - Year: 2024/2025
 
-IMPORTANT SEARCH INSTRUCTIONS:
-1. Search for OFFICIAL sources only: embassy websites, VFS Global, TLScontact, government visa portals
-2. Verify information from multiple official sources when possible
-3. For "application_location", CAREFULLY verify the ACTUAL application process:
-   a. First, search whether ${destinationCountry.name} uses VFS Global OR TLScontact in ${residenceCountry.name}
-   b. If you find NO evidence of VFS Global/TLScontact, the application is at the ${destinationCountry.name} embassy/consulate in ${residenceCountry.name}
-   c. ONLY mention VFS Global or TLScontact if you find SPECIFIC evidence they handle ${destinationCountry.name} visas in ${residenceCountry.name}
-   d. Many countries do NOT use VFS Global - verify before assuming
-4. DO NOT assume VFS Global is used unless you find clear evidence in official sources
-5. DO NOT guess or make assumptions - if you cannot find official information, indicate "Contact local embassy"
-6. CRITICAL: ALL URLs must be REAL, WORKING links found in your web search - do NOT generate or construct URLs
-7. If you cannot find a specific URL from official sources, return null instead of making one up
+CRITICAL SEARCH FOCUS - Search for information FROM the DESTINATION country (${destinationCountry.name}):
+1. "${destinationCountry.name} visa requirements for ${passportCountry.name} citizens"
+2. "${destinationCountry.name} embassy in ${residenceCountry.name}"
+3. "${destinationCountry.name} official visa portal" or "${destinationCountry.name} e-visa"
+4. "${destinationCountry.name} ministry of foreign affairs visa information"
+5. "How to apply for ${destinationCountry.name} visa from ${residenceCountry.name}"
 
-STRICT URL REQUIREMENTS:
-- "website": Must be the EXACT URL from your web search results for the ${destinationCountry.name} embassy in ${residenceCountry.name}
-- "application_form_url": Must be a REAL URL you found that links directly to the visa application form
-- "checklist_url": Must be a REAL URL you found that links to the document checklist
-- "booking_link": Must be a REAL URL you found for appointment booking (VFS Global, embassy, etc.)
-- If you cannot find any of these URLs from official sources in your search, use null instead
+STRICT SOURCE REQUIREMENTS - Only use official ${destinationCountry.name} sources:
+✓ ${destinationCountry.name} government visa portals (.gov domains)
+✓ ${destinationCountry.name} embassy/consulate websites in ${residenceCountry.name}
+✓ ${destinationCountry.name} Ministry of Foreign Affairs
+✓ Official ${destinationCountry.name} e-visa platforms
+✓ VFS Global or TLScontact ONLY if they are confirmed to handle ${destinationCountry.name} visas
+✗ DO NOT use ${passportCountry.name} or ${residenceCountry.name} government websites
+✗ DO NOT use travel blogs, forums, or unofficial sources
+✗ DO NOT use generic visa information aggregators
+
+APPLICATION LOCATION VERIFICATION:
+1. Search specifically: "where to apply for ${destinationCountry.name} visa in ${residenceCountry.name}"
+2. Look for: "${destinationCountry.name} embassy ${residenceCountry.name} visa application"
+3. Check if ${destinationCountry.name} uses VFS Global/TLScontact in ${residenceCountry.name} - ONLY mention if confirmed
+4. If no VFS/TLS: application is at ${destinationCountry.name} embassy/consulate in ${residenceCountry.name}
+5. For e-visa countries: specify the official ${destinationCountry.name} e-visa portal
+
+URL VALIDATION - ALL URLs must be from ${destinationCountry.name} official sources:
+- "website": ${destinationCountry.name} embassy in ${residenceCountry.name} official website
+- "application_form_url": Official ${destinationCountry.name} visa application form (government or embassy site)
+- "checklist_url": Official ${destinationCountry.name} document checklist
+- "booking_link": Official ${destinationCountry.name} appointment system or verified VFS/TLS link
+- If URLs not found from official ${destinationCountry.name} sources: use null
+- DO NOT include Google search links, travel blogs, or generic visa sites
 
 Return your response in the following JSON format ONLY (no markdown, no explanations):
 
@@ -155,20 +168,26 @@ Return your response in the following JSON format ONLY (no markdown, no explanat
     "Step 2 description",
     "Step 3 description"
   ],
-  "application_location": "Where to apply - MUST be based on search results (e.g., 'VFS Global Center in [city]', '[Country] Embassy in [city]', 'Online via [official portal]')",
+  "application_location": "Where to apply - based on ${destinationCountry.name} official sources (e.g., '${destinationCountry.name} Embassy in [city]', 'Online via ${destinationCountry.name} e-visa portal', or 'VFS Global Center in [city]' if confirmed)",
   "contact_info": {
-    "embassy": "Embassy name from official source",
-    "address": "Actual embassy address in ${residenceCountry.name}",
-    "phone": "Actual contact phone number",
-    "email": "Actual contact email",
-    "website": "EXACT official embassy website URL from search results or null"
+    "embassy": "${destinationCountry.name} Embassy/Consulate name in ${residenceCountry.name}",
+    "address": "${destinationCountry.name} embassy address in ${residenceCountry.name}",
+    "phone": "${destinationCountry.name} embassy contact phone",
+    "email": "${destinationCountry.name} embassy contact email",
+    "website": "EXACT ${destinationCountry.name} embassy website URL or null"
   },
-  "application_form_url": "REAL working URL from search results or null",
-  "checklist_url": "REAL working URL from search results or null",
-  "visa_fee": "Fee amount with currency (from official source)",
-  "processing_time": "Estimated processing time (from official source)",
-  "booking_link": "REAL working URL from search results or null"
+  "application_form_url": "Official ${destinationCountry.name} visa form URL or null",
+  "checklist_url": "Official ${destinationCountry.name} checklist URL or null",
+  "visa_fee": "Fee in official currency from ${destinationCountry.name} sources",
+  "processing_time": "Processing time from ${destinationCountry.name} official sources",
+  "booking_link": "Official ${destinationCountry.name} booking URL or null"
 }
+
+FINAL REMINDER:
+- Focus ONLY on ${destinationCountry.name} official sources
+- Reject information from ${passportCountry.name} or ${residenceCountry.name} government sites
+- All URLs must be from ${destinationCountry.name} authorities or their verified service providers
+- Use null for any URL you cannot verify from official ${destinationCountry.name} sources
 
 Return ONLY valid JSON, no markdown formatting, no code blocks.`;
   }
